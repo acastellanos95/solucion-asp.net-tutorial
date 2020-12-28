@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
 using Dominio;
 
 namespace Persistencia
@@ -7,15 +8,15 @@ namespace Persistencia
     {
         public CursosOnlineContext(DbContextOptions options) : base(options)
         {}
-        public override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CursoInstructor>().HasKey(ci => new {ci.InstructorId, ci.CursoId});
         }
 
-        public DbSet<Comentario> Comentarios { get; set; }
-        public DbSet<Curso> Cursos { get; set; }
-        public DbSet<CursoInstructor> CursoInstructors { get; set; }
-        public DbSet<Instructor> Instructors { get; set; }
-        public DbSet<Precio> Precios { get; set; }
+        public DbSet<Comentario> Comentario { get; set; }
+        public DbSet<Curso> Curso { get; set; }
+        public DbSet<CursoInstructor> CursoInstructor { get; set; }
+        public DbSet<Instructor> Instructor { get; set; }
+        public DbSet<Precio> Precio { get; set; }
     }
 }
