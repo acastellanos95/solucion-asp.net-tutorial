@@ -33,7 +33,7 @@ namespace WebAPI
             services.AddDbContext<CursosOnlineContext>(opt => {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
-            services.AddMediatR(typeof(Consulta.Handler).Assembly);
+            services.AddMediatR(typeof(Consulta.ListaCursosHandler).Assembly);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

@@ -15,10 +15,10 @@ namespace Aplicacion.Cursos
             
         }
 
-        public class Handler : IRequestHandler<ListaCursos, List<Curso>>
+        public class ListaCursosHandler : IRequestHandler<ListaCursos, List<Curso>>
         {
             public readonly CursosOnlineContext _context;
-            public Handler(CursosOnlineContext context)
+            public ListaCursosHandler(CursosOnlineContext context)
             {
                 _context = context;
             }

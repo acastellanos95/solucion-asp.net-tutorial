@@ -13,10 +13,10 @@ namespace Aplicacion.Cursos
             public int Id { get; set; }
         }
 
-    public class Handler : IRequestHandler<CursoUnico, Curso>
+    public class CursoUnicoHandler : IRequestHandler<CursoUnico, Curso>
     {
         private readonly CursosOnlineContext _context;
-        public Handler(CursosOnlineContext context)
+        public CursoUnicoHandler(CursosOnlineContext context)
         {
             _context = context;
         }
