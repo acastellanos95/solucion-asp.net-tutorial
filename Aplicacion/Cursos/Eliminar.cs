@@ -1,6 +1,8 @@
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Aplicacion.ErrorHandling;
 using MediatR;
 using Persistencia;
 
@@ -23,14 +25,14 @@ namespace Aplicacion.Cursos
 
             public async Task<Unit> Handle(EliminarCursoRequest request, CancellationToken cancellationToken)
             {
-                var curso = await _context.Curso.FindAsync(request.CursoId) ?? throw new Exception("El curso no existe");
+                var curso = await _context.Curso.FindAsync(request.CursoId) ?? throw new ExceptionHandling(HttpStatusCode.NotFound, new { message = "No se encontró el curso" });
                 _context.Curso.Remove(curso);
                 var valor = await _context.SaveChangesAsync();
                 if (valor > 0)
                 {
                     return Unit.Value;
                 }
-                throw new Exception("No se pudo actualizar el curso");
+                throw new Exception("No se pudo eliminar el curso");
             }
         }
     }

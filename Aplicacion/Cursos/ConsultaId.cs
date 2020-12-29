@@ -1,5 +1,7 @@
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Aplicacion.ErrorHandling;
 using Dominio;
 using MediatR;
 using Persistencia;
@@ -23,7 +25,7 @@ namespace Aplicacion.Cursos
 
         public async Task<Curso> Handle(CursoUnico request, CancellationToken cancellationToken)
         {
-            var curso = await _context.Curso.FindAsync(request.Id);
+            var curso = await _context.Curso.FindAsync(request.Id) ?? throw new ExceptionHandling(HttpStatusCode.NotFound, new { message = "No se encontró el curso"});
             return curso;
         }
     }
