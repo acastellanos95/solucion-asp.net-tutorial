@@ -1,6 +1,7 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Aplicacion.Contratos;
 using Aplicacion.ErrorHandling;
 using Dominio;
 using FluentValidation;
@@ -30,9 +31,11 @@ namespace Aplicacion.Seguridad
         {
             private readonly UserManager<User> _userManager;
             private readonly SignInManager<User> _signInManager;
+            private readonly IJwtGenerator _jwtGenerator;
 
-            public LoginHandler(UserManager<User> userManager, SignInManager<User> signInManager)
+            public LoginHandler(UserManager<User> userManager, SignInManager<User> signInManager, IJwtGenerator generator)
             {
+                _jwtGenerator = generator;
                 _userManager = userManager;
                 _signInManager = signInManager;
             }
@@ -50,7 +53,7 @@ namespace Aplicacion.Seguridad
                     return new UserData
                     {
                         NombreCompleto = user.NombreCompleto,
-                        Token = "Falta implementación",
+                        Token = _jwtGenerator.CrearToken(user),
                         Username = user.UserName,
                         Email = user.Email,
                         Imagen = null,
