@@ -23,5 +23,12 @@ namespace WebAPI.Controllers
         {
             return await Mediator.Send(parametros);
         }
+
+        //http://localhost:5000/api/User
+        [HttpGet]
+        public async Task<ActionResult<UserData>> ReturnUser()
+        {
+            return await Mediator.Send(new CurrentUser.CurrentUserRequest());
+        }
     }
 }
