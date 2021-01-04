@@ -10,21 +10,25 @@ namespace Aplicacion.Cursos
 {
     public class Consulta
     {
-        public class ListaCursos : IRequest<List<Curso>>
+        public class ListaCursos : IRequest<List<CursoDto>>
         {
             
         }
 
-        public class ListaCursosHandler : IRequestHandler<ListaCursos, List<Curso>>
+        public class ListaCursosHandler : IRequestHandler<ListaCursos, List<CursoDto>>
         {
             public readonly CursosOnlineContext _context;
             public ListaCursosHandler(CursosOnlineContext context)
             {
                 _context = context;
             }
-            public async Task<List<Curso>> Handle(ListaCursos request, CancellationToken cancellationToken)
+            public async Task<List<CursoDto>> Handle(ListaCursos request, CancellationToken cancellationToken)
             {
-                var cursos = await _context.Curso.ToListAsync();
+                var cursos = await _context.Curso
+                                .Include(x => x.InstructoresLista)
+                                .ThenInclude(x => x.Instructor)
+                                .ToListAsync();
+                
                 return cursos;
             }
         }
