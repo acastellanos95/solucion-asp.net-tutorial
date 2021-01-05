@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Dominio;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,19 +18,23 @@ namespace Aplicacion.Cursos
 
         public class ListaCursosHandler : IRequestHandler<ListaCursos, List<CursoDto>>
         {
-            public readonly CursosOnlineContext _context;
-            public ListaCursosHandler(CursosOnlineContext context)
+            private readonly CursosOnlineContext _context;
+            private readonly IMapper _mapper;
+            public ListaCursosHandler(CursosOnlineContext context, IMapper mapper)
             {
+                _mapper = mapper;
                 _context = context;
             }
             public async Task<List<CursoDto>> Handle(ListaCursos request, CancellationToken cancellationToken)
             {
                 var cursos = await _context.Curso
+                                .Include(x => x.Precio)
+                                .Include(x => x.ComentarioLista)
                                 .Include(x => x.InstructoresLista)
                                 .ThenInclude(x => x.Instructor)
                                 .ToListAsync();
-                
-                return cursos;
+                var cursosDto = _mapper.Map<List<Curso>, List<CursoDto>>(cursos);
+                return cursosDto;
             }
         }
     }

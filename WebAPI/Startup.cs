@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Aplicacion.Contratos;
 using Aplicacion.Cursos;
+using AutoMapper;
 using Dominio;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -71,6 +72,7 @@ namespace WebAPI
             });
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IUserSession, UserSession>();
+            services.AddAutoMapper(typeof(Consulta.ListaCursosHandler));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });

@@ -1,3 +1,5 @@
+using System;
+
 namespace Aplicacion.Cursos
 {
     public class CursoInstructorDto
