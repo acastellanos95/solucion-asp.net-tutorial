@@ -9,7 +9,7 @@ namespace Persistencia.DapperConnection.Instructor
         Task<List<InstructorModel>> GetInstructorList();
         Task<InstructorModel> GetById(Guid id);
         Task<int> New(string Nombre, string Apellidos, string Grado);
-        Task<int> Update(InstructorModel instructor);
+        Task<int> Update(Guid InstructorId, string Nombre, string Apellidos, string Grado);
         Task<int> Delete(Guid id);
     }
 }
