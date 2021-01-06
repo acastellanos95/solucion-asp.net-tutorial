@@ -81,7 +81,8 @@ namespace WebAPI
             services.AddScoped<IInstructor, InstructorRepositorio>();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Servicios para mantenimiento de cursos", Version = "v1" });
+                c.CustomSchemaIds(c => c.FullName);
             });
         }
 
@@ -93,7 +94,7 @@ namespace WebAPI
                 // app.UseDeveloperExceptionPage();
                 app.UseMiddleware<ErrorHandlingMiddleware>();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CursosOnline v1"));
             }
 
             app.UseAuthentication();
