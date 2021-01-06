@@ -36,7 +36,7 @@ namespace Aplicacion.Instructores
       {
 
         var result = await _instructor.GetById(request.InstructorId);
-        if(result == null) throw new ExceptionHandling(HttpStatusCode.NotFound, new { message = "No se encontró el instructor"})
+        if(result == null) throw new ExceptionHandling(HttpStatusCode.NotFound, new { message = "No se encontró el instructor"});
         return result;
       }
     }
