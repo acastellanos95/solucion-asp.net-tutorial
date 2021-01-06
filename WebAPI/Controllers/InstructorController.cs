@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
 
         // http://localhost:5000/api/Instructor
         [HttpPost]
-        public async Task<ActionResult<Unit>> NewInstructor(Nuevo.NuevoInstructorRequest request)
+        public async Task<ActionResult<Unit>> NewInstructor([FromBody] Nuevo.NuevoInstructorRequest request)
         {
             return await Mediator.Send(request);
         }
