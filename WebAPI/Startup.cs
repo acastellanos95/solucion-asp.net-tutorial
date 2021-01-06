@@ -27,6 +27,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Persistencia;
+using Persistencia.DapperConnection;
+using Persistencia.DapperConnection.Instructor;
 using Seguridad;
 using WebAPI.Middleware;
 
@@ -47,6 +49,8 @@ namespace WebAPI
             services.AddDbContext<CursosOnlineContext>(opt => {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+            services.AddOptions();
+            services.Configure<ConnectionConfig>(Configuration.GetSection("ConnectionStrings"));
             services.AddMediatR(typeof(Consulta.ListaCursosHandler).Assembly);
             services.AddControllers(opt => 
                 {
@@ -73,6 +77,8 @@ namespace WebAPI
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IUserSession, UserSession>();
             services.AddAutoMapper(typeof(Consulta.ListaCursosHandler));
+            services.AddTransient<IFactoryConnection, FactoryConnection>();
+            services.AddScoped<IInstructor, InstructorRepositorio>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
