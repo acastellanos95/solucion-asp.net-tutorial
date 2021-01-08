@@ -29,6 +29,7 @@ using Microsoft.OpenApi.Models;
 using Persistencia;
 using Persistencia.DapperConnection;
 using Persistencia.DapperConnection.Instructor;
+using Persistencia.DapperConnection.Paginacion;
 using Seguridad;
 using WebAPI.Middleware;
 
@@ -58,8 +59,12 @@ namespace WebAPI
                     opt.Filters.Add(new AuthorizeFilter(policy));
                 }).
                 AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Nuevo>());
+
             var builder = services.AddIdentityCore<User>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+
+            identityBuilder.AddRoles<IdentityRole>();
+            identityBuilder.AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<User, IdentityRole>>();
             identityBuilder.AddEntityFrameworkStores<CursosOnlineContext>();
             identityBuilder.AddSignInManager<SignInManager<User>>();
             services.TryAddSingleton<ISystemClock, SystemClock>();
@@ -79,6 +84,7 @@ namespace WebAPI
             services.AddAutoMapper(typeof(Consulta.ListaCursosHandler));
             services.AddTransient<IFactoryConnection, FactoryConnection>();
             services.AddScoped<IInstructor, InstructorRepositorio>();
+            services.AddScoped<IPaginacion, PaginacionRepositorio>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Servicios para mantenimiento de cursos", Version = "v1" });
