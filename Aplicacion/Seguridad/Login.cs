@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,12 +49,15 @@ namespace Aplicacion.Seguridad
                     throw new ExceptionHandling(HttpStatusCode.Unauthorized, new { message = "No se encontró el mail"});
                 }
                 var res = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+
+                var listaRoles = await _userManager.GetRolesAsync(user);
+
                 if(res.Succeeded)
                 {
                     return new UserData
                     {
                         NombreCompleto = user.NombreCompleto,
-                        Token = _jwtGenerator.CrearToken(user),
+                        Token = _jwtGenerator.CrearToken(user, new List<string>(listaRoles)),
                         Username = user.UserName,
                         Email = user.Email,
                         Imagen = null,
