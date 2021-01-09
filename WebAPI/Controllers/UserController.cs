@@ -30,5 +30,12 @@ namespace WebAPI.Controllers
         {
             return await Mediator.Send(new CurrentUser.CurrentUserRequest());
         }
+
+        //http://localhost:5000/api/User
+        [HttpPut]
+        public async Task<ActionResult<UserData>> UpdateUser([FromBody] UpdateUser.UpdateUserRequest request)
+        {
+            return await Mediator.Send(request);
+        }
     }
 }
