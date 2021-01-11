@@ -1,36 +1,22 @@
-import {
-  Button,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-} from "@material-ui/core";
-import React from "react";
-import style from "../Tools/Style";
+import { Button, Container, Grid, TextField, Typography } from '@material-ui/core';
+import React from 'react';
+import style from '../Tools/Style';
 
-const RegisterUser = () => {
+const CreateUserProfile = () => {
   return (
     <Container component="main" maxWidth="md" justify="center">
       <div style={style.paper}>
         <Typography component="h1" variant="h5">
-          Registro de usuario
+          Perfil de usuario
         </Typography>
         <form style={style.form}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <TextField
-                name="nombre"
+                name="nombreCompleto"
                 variant="outlined"
                 fullWidth
-                label="Ingrese su nombre"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                name="apellidos"
-                variant="outlined"
-                fullWidth
-                label="Ingrese sus apellidos"
+                label="Ingrese su nombre completo"
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -39,14 +25,6 @@ const RegisterUser = () => {
                 variant="outlined"
                 fullWidth
                 label="Ingrese su email"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                name="username"
-                variant="outlined"
-                fullWidth
-                label="Ingrese su username"
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -78,7 +56,7 @@ const RegisterUser = () => {
                 size="large"
                 style={style.submit}
               >
-                Enviar
+                Guardar datos
               </Button>
             </Grid>
           </Grid>
@@ -88,4 +66,4 @@ const RegisterUser = () => {
   );
 };
 
-export default RegisterUser;
+export default CreateUserProfile;
