@@ -19,8 +19,7 @@ namespace Aplicacion.Seguridad
   {
     public class UpdateUserRequest : IRequest<UserData>
     {
-      public string Nombre { get; set; }
-      public string Apellidos { get; set; }
+      public string NombreCompleto { get; set; }
       public string Email { get; set; }
       public string Password { get; set; }
       public string Username { get; set; }
@@ -30,8 +29,7 @@ namespace Aplicacion.Seguridad
     {
       public UpdateUserValidator()
       {
-        RuleFor(x => x.Nombre).NotEmpty();
-        RuleFor(x => x.Apellidos).NotEmpty();
+        RuleFor(x => x.NombreCompleto).NotEmpty();
         RuleFor(x => x.Email).NotEmpty();
         RuleFor(x => x.Password).NotEmpty();
         RuleFor(x => x.Username).NotEmpty();
@@ -59,7 +57,7 @@ namespace Aplicacion.Seguridad
 
         if (result) throw new ExceptionHandling(HttpStatusCode.InternalServerError, new { message = "Este email pertenece a otro usuario" });
 
-        userIdentity.NombreCompleto = request.Nombre + " " + request.Apellidos;
+        userIdentity.NombreCompleto = request.NombreCompleto;
         userIdentity.PasswordHash = _passwordHasher.HashPassword(userIdentity, request.Password);
         userIdentity.Email = request.Email;
 
