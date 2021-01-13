@@ -3,15 +3,26 @@ import {ThemeProvider as MuithemeProvider} from "@material-ui/core/styles";
 import theme from "./Theme/Theme";
 import RegisterUser from "./Components/Security/RegisterUser";
 import LoginUser from "./Components/Security/LoginUser";
-import CreateUserProfile from "./Components/Security/CreateUserProfile";
+import UpdateUserProfile from "./Components/Security/UpdateUserProfile";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Grid } from "@material-ui/core";
+import AppNavBar from "./Components/Navegation/AppNavBar";
 
 function App() {
   return (
-    <MuithemeProvider theme={theme}>
-        <RegisterUser />
-        <LoginUser />
-        <CreateUserProfile />
-    </MuithemeProvider>
+    <Router>
+      <MuithemeProvider theme={theme}>
+        <AppNavBar />
+        <Grid container>
+          <Switch>
+            <Route exact path="/auth/login" component={LoginUser} />
+            <Route exact path="/auth/register" component={RegisterUser} />
+            <Route exact path="/auth/perfil" component={UpdateUserProfile} />
+            <Route exact path="/" component={UpdateUserProfile} />
+          </Switch>
+        </Grid>
+      </MuithemeProvider>
+    </Router>
   );
 }
 
