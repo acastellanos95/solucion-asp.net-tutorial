@@ -6,10 +6,34 @@ import {
   Typography,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import React from "react";
+import React, { useState } from "react";
+import { loginUser } from "../../Actions/UserAction";
 import style from "../Tools/Style";
 
 const LoginUser = () => {
+
+  const [user, setUser] = useState({
+    Email: "",
+    Password: "",
+  });
+
+  const onChangeUserHandler = (e) => {
+    const { name, value } = e.target;
+    setUser((userBefore) => ({ ...userBefore, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    loginUser(user).then((response) => {
+      console.log("se logeo exitosamente al usuario", response);
+      window.localStorage.setItem("JWT_token", response.data.token);
+    });
+    setUser({
+      Email: "",
+      Password: "",
+    });
+  };
+
   return (
     <Container component="main" maxWidth="xs" justify="center">
       <div style={style.paper}>
@@ -19,18 +43,22 @@ const LoginUser = () => {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <form style={style.form}>
+        <form style={style.form} onSubmit={handleSubmit}>
           <TextField
-            name="username"
+            name="Email"
             variant="outlined"
+            onChange={onChangeUserHandler}
+            value={user.Email}
             fullWidth
             margin="normal"
             label="Ingrese su username"
           />
           <TextField
-            name="password"
+            name="Password"
             type="password"
             variant="outlined"
+            onChange={onChangeUserHandler}
+            value={user.Password}
             fullWidth
             margin="normal"
             label="Ingrese su password"

@@ -5,36 +5,43 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "../Tools/Style";
-import { registerUser } from "../../Actions/UserAction";
+import { obtainCurrentUser, updateUser } from "../../Actions/UserAction";
 
-const RegisterUser = () => {
-  const [user, setUser] = useState({
-    NombreCompleto: "",
-    Email: "",
-    Username: "",
-    Password: "",
-    ConfirmacionPassword: "",
+const UpdateUserProfile = () => {
+  const [profile, setProfile] = useState({
+    nombreCompleto: "",
+    email: "",
+    username: "",
+    password: "",
+    confirmacionPassword: "",
   });
 
-  const onChangeUserHandler = (e) => {
+  useEffect(()=>{
+    obtainCurrentUser().then(response => {
+      console.log(response);
+      setProfile(response.data);
+    });
+  }, []);
+
+  const onChangeProfileHandler = (e) => {
     const { name, value } = e.target;
-    setUser((userBefore) => ({ ...userBefore, [name]: value }));
+    setProfile((profileBefore) => ({ ...profileBefore, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    registerUser(user).then((response) => {
+    updateUser(profile).then((response) => {
       console.log("se registro exitosamente al usuario", response);
       window.localStorage.setItem("JWT_token", response.data.token);
     });
-    setUser({
-      NombreCompleto: "",
-      Email: "",
-      Username: "",
-      Password: "",
-      ConfirmacionPassword: "",
+    setProfile({
+      nombreCompleto: "",
+      username: "",
+      email: "",
+      password: "",
+      confirmacionPassword: "",
     });
   };
 
@@ -42,58 +49,58 @@ const RegisterUser = () => {
     <Container component="main" maxWidth="md" justify="center">
       <div style={style.paper}>
         <Typography component="h1" variant="h5">
-          Registro de usuario
+          Perfil de usuario
         </Typography>
         <form style={style.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={12}>
               <TextField
-                name="NombreCompleto"
+                name="nombreCompleto"
                 variant="outlined"
-                onChange={onChangeUserHandler}
-                value={user.NombreCompleto}
+                onChange={onChangeProfileHandler}
+                value={profile.nombreCompleto || ''}
                 fullWidth
                 label="Ingrese su nombre completo"
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
-                name="Email"
+                name="username"
                 variant="outlined"
-                onChange={onChangeUserHandler}
-                value={user.Email}
-                fullWidth
-                label="Ingrese su email"
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <TextField
-                name="Username"
-                variant="outlined"
-                onChange={onChangeUserHandler}
-                value={user.Username}
+                onChange={onChangeProfileHandler}
+                value={profile.username || ''}
                 fullWidth
                 label="Ingrese su username"
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
-                name="Password"
+                name="email"
+                variant="outlined"
+                onChange={onChangeProfileHandler}
+                value={profile.email || ''}
+                fullWidth
+                label="Ingrese su email"
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                name="password"
                 type="password"
                 variant="outlined"
-                onChange={onChangeUserHandler}
-                value={user.Password}
+                onChange={onChangeProfileHandler}
+                value={profile.password || ''}
                 fullWidth
                 label="Ingrese su password"
               />
             </Grid>
             <Grid item xs={12} md={6}>
               <TextField
-                name="ConfirmacionPassword"
+                name="confirmacionPassword"
                 type="password"
                 variant="outlined"
-                onChange={onChangeUserHandler}
-                value={user.ConfirmacionPassword}
+                onChange={onChangeProfileHandler}
+                value={profile.confirmacionPassword || ''}
                 fullWidth
                 label="Confirme su password"
               />
@@ -109,7 +116,7 @@ const RegisterUser = () => {
                 size="large"
                 style={style.submit}
               >
-                Enviar
+                Guardar datos
               </Button>
             </Grid>
           </Grid>
@@ -119,4 +126,4 @@ const RegisterUser = () => {
   );
 };
 
-export default RegisterUser;
+export default UpdateUserProfile;
