@@ -51,7 +51,7 @@ const LoginUser = () => {
             value={user.Email}
             fullWidth
             margin="normal"
-            label="Ingrese su username"
+            label="Ingrese su Email"
           />
           <TextField
             name="Password"

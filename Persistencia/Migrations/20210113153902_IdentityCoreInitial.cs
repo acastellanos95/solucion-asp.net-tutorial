@@ -55,7 +55,8 @@ namespace Persistencia.Migrations
                     Titulo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FechaPublicacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FotoPortada = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                    FotoPortada = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -70,7 +71,8 @@ namespace Persistencia.Migrations
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Apellidos = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Grado = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FotoPerfil = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                    FotoPerfil = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -191,7 +193,8 @@ namespace Persistencia.Migrations
                     Alumno = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Puntaje = table.Column<int>(type: "int", nullable: false),
                     ComentarioTexto = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CursoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CursoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
