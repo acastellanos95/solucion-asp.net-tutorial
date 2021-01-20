@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
+import { UseStateValue } from "../../../Context/Store";
 import reactImg from "../../../logo.svg";
 
 const useStyles = makeStyles((theme) => ({
@@ -33,6 +34,8 @@ const useStyles = makeStyles((theme) => ({
 
 const BarSession = () => {
   const classes = useStyles();
+  const [{userSession}, dispatch] = UseStateValue();
+
   return (
     <Toolbar>
       <IconButton color="inherit">
@@ -42,7 +45,7 @@ const BarSession = () => {
       <div className={classes.grow}></div>
       <div className={classes.seccionDesktop}>
         <Button color="inherit">Salir</Button>
-        <Button color="inherit">{"Nombre de usuario"}</Button>
+        <Button color="inherit">{userSession ? userSession.user.nombreCompleto : ''}</Button>
         <Avatar src={reactImg} />
       </div>
       <div className={classes.seccionMobile}>

@@ -8,9 +8,14 @@ export const registerUser = (user) => {
   });
 }
 
-export const obtainCurrentUser = () => {
+export const obtainCurrentUser = (dispatch) => {
   return new Promise((resolve, eject) => {
     HttpClient.get("/user").then(response => {
+      // dispatch({
+      //   type : 'INICIAR_SESION',
+      //   sesion : response.data,
+      //   autenticado : true
+      // });
       resolve(response);
     });
   });
@@ -20,6 +25,9 @@ export const updateUser = (user) => {
   return new Promise((resolve, eject) => {
     HttpClient.put("/user", user).then(response => {
       resolve(response);
+    })
+    .catch(error => {
+      resolve(error.response);
     });
   });
 }
