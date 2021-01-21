@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import { UseStateValue } from "../../../Context/Store";
+import { useStateValue } from "../../../Context/Store";
 import reactImg from "../../../logo.svg";
 
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const BarSession = () => {
   const classes = useStyles();
-  const [{userSession}, dispatch] = UseStateValue();
+  const [{userSession}, dispatch] = useStateValue();
 
   return (
     <Toolbar>

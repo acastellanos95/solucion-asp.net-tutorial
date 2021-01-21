@@ -8,8 +8,10 @@ import {
 import React, { useEffect, useState } from "react";
 import style from "../Tools/Style";
 import { obtainCurrentUser, updateUser } from "../../Actions/UserAction";
+import { useStateValue } from "../../Context/Store";
 
 const UpdateUserProfile = () => {
+  const [{ userSession}, dispatch] = useStateValue();
   const [profile, setProfile] = useState({
     nombreCompleto: "",
     email: "",
@@ -19,11 +21,11 @@ const UpdateUserProfile = () => {
   });
 
   useEffect(()=>{
-    obtainCurrentUser().then(response => {
-      console.log(response);
-      setProfile(response.data);
-    });
-  }, []);
+    setProfile(userSession);
+    setProfile((anterior) => ({
+      ...anterior,
+    }));
+  }, [userSession]);
 
   const onChangeProfileHandler = (e) => {
     const { name, value } = e.target;

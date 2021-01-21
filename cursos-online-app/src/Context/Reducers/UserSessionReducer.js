@@ -1,5 +1,5 @@
 export const initialState = {
-  user: {
+  usuario: {
     nombreCompleto: "",
     email: "",
     username: "",
@@ -13,21 +13,21 @@ const userSessionReducer = (state = initialState, action) => {
     case "INICIAR_SESION":
       return {
         ...state,
-        user: action.sesion,
+        usuario: action.sesion,
         autenticado: action.autenticado,
       };
 
     case "SALIR_SESION":
       return {
         ...state,
-        user: action.nuevoUsuario,
+        usuario: action.nuevoUsuario,
         autenticado: action.autenticado, //debería ser false
       };
 
     case "ACTUALIZAR_USUARIO":
       return {
         ...state,
-        user: action.nuevoUsuario,
+        usuario: action.nuevoUsuario,
         autenticado: action.autenticado,
       };
 

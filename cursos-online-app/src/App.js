@@ -8,12 +8,12 @@ import UpdateUserProfile from "./Components/Security/UpdateUserProfile";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Grid, Snackbar } from "@material-ui/core";
 import AppNavBar from "./Components/Navegation/AppNavBar";
-import { UseStateValue } from "./Context/Store";
+import { useStateValue } from "./Context/Store";
 import { useEffect, useState } from "react";
 import { obtainCurrentUser } from "./Actions/UserAction";
 
 function App() {
-  const [{ openSnackbar}, dispatch] = UseStateValue();
+  const [{ openSnackbar}, dispatch] = useStateValue();
   const [iniciaApp, setIniciaApp] = useState(false);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ function App() {
           setIniciaApp(true);
         });
     }
-  }, [iniciaApp]);
+  }, [iniciaApp, dispatch]);
 
   return (
     <React.Fragment>
