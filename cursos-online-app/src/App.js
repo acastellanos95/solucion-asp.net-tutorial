@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { obtainCurrentUser } from "./Actions/UserAction";
 
 function App() {
-  const [{ openSnackbar}, dispatch] = useStateValue();
+  const [{ sesionUsuario, openSnackbar }, dispatch] = useStateValue();
   const [iniciaApp, setIniciaApp] = useState(false);
 
   useEffect(() => {

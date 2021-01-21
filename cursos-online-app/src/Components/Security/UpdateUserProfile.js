@@ -21,11 +21,13 @@ const UpdateUserProfile = () => {
   });
 
   useEffect(()=>{
-    setProfile(userSession);
-    setProfile((anterior) => ({
-      ...anterior,
-    }));
-  }, [userSession]);
+    obtainCurrentUser(dispatch).then(response => {
+      console.log("esta es la data del objeto response del usuario actual ", response);
+      setProfile(response.data);
+    }).catch(error => {
+      console.log("hubo un error");
+    });
+  }, []);
 
   const onChangeProfileHandler = (e) => {
     const { name, value } = e.target;
@@ -35,15 +37,25 @@ const UpdateUserProfile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     updateUser(profile).then((response) => {
-      console.log("se registro exitosamente al usuario", response);
-      window.localStorage.setItem("JWT_token", response.data.token);
-    });
-    setProfile({
-      nombreCompleto: "",
-      username: "",
-      email: "",
-      password: "",
-      confirmacionPassword: "",
+      if(response.status === 200){
+        dispatch({
+          type : "OPEN_SNACKBAR",
+          openMessage : {
+            open : true,
+            mensaje : "Se guardaron exitosamente los cambios en perfil usuario"
+          }
+        });
+        window.localStorage.setItem("JWT_token", response.data.token);
+      }
+      else{
+        dispatch({
+          type : "OPEN_SNACKBAR",
+          openMessage : {
+            open : true,
+            mensaje : "Error al intentar guardar en " + Object.keys(response.data.errores)
+          }
+        });
+      }
     });
   };
 

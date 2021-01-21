@@ -21,7 +21,7 @@ export const obtainCurrentUser = (dispatch) => {
       resolve(response);
     })
     .catch((error) => {
-      console.log('error actualizar', error);
+      console.log('error actualizar perfil', error);
       
       resolve(error);
     });
