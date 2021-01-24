@@ -28,10 +28,6 @@ const LoginUser = () => {
       console.log("se logeo exitosamente al usuario", response);
       window.localStorage.setItem("JWT_token", response.data.token);
     });
-    setUser({
-      Email: "",
-      Password: "",
-    });
   };
 
   return (

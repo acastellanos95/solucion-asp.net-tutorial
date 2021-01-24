@@ -26,7 +26,7 @@ function App() {
           setIniciaApp(true);
         });
     }
-  }, [iniciaApp, dispatch]);
+  }, [iniciaApp]);
 
   return (
     <React.Fragment>
@@ -58,7 +58,7 @@ function App() {
               <Route exact path="/auth/login" component={LoginUser} />
               <Route exact path="/auth/register" component={RegisterUser} />
               <Route exact path="/auth/profile" component={UpdateUserProfile} />
-              <Route exact path="/" component={UpdateUserProfile} />
+              <Route exact path="/" component={LoginUser} />
             </Switch>
           </Grid>
         </MuithemeProvider>

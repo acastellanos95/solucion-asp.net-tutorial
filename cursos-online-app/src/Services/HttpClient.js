@@ -3,11 +3,14 @@ import axios from "axios";
 axios.defaults.baseURL = "http://localhost:5000/api";
 
 axios.interceptors.request.use((config) => {
+
   const securityToken = window.localStorage.getItem("JWT_token");
+
   if(securityToken){
     config.headers.Authorization = "Bearer " + securityToken;
     return config;
   }
+
 }, err => {
   return Promise.reject(err);
 });

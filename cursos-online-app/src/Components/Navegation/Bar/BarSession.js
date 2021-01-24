@@ -3,16 +3,16 @@ import {
   Button,
   Drawer,
   IconButton,
-  List,
-  ListItem,
-  ListItemText,
   makeStyles,
   Toolbar,
   Typography,
 } from "@material-ui/core";
 import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
 import { useStateValue } from "../../../Context/Store";
 import reactImg from "../../../logo.svg";
+import MenuDerecha from "./MenuDerecha";
+import MenuIzquierda from "./MenuIzquierda";
 
 const useStyles = makeStyles((theme) => ({
   seccionDesktop: {
@@ -37,20 +37,31 @@ const useStyles = makeStyles((theme) => ({
   list: {
     width: 250,
   },
-  listItemText : {
-    fontSize : "14px",
-    fontWeight : 600,
-    paddingLeft : "15px",
-    color : "#212121"
+  listItemText: {
+    fontSize: "14px",
+    fontWeight: 600,
+    paddingLeft: "15px",
+    color: "#212121",
   },
 }));
 
-const BarSession = () => {
+const BarSession = (props) => {
   const classes = useStyles();
   const [{ userSession }, dispatch] = useStateValue();
   const [abrirMenuIzquierdo, setAbrirMenuIzquierdo] = useState(false);
+  const [abrirMenuDerecho, setAbrirMenuDerecho] = useState(false);
+
+  const cerrarMenuDerecho = () => {
+    setAbrirMenuDerecho(false);
+  };
+
   const cerrarMenuIzquierdo = () => {
     setAbrirMenuIzquierdo(false);
+  };
+
+  const salirSesionApp = () => {
+    localStorage.removeItem("JWT_token");
+    props.history.push("/auth/login");
   };
 
   return (
@@ -60,17 +71,34 @@ const BarSession = () => {
         onClose={cerrarMenuIzquierdo}
         anchor="left"
       >
-        <div className={classes.list} onKeyDown={cerrarMenuIzquierdo} onClick={cerrarMenuIzquierdo}>
-          <List>
-            <ListItem button>
-              <i className="material-icons">account_box</i>
-              <ListItemText classes={{primary : classes.listItemText}} primary="Perfil" />
-            </ListItem>
-          </List>
+        <div
+          className={classes.list}
+          onKeyDown={cerrarMenuIzquierdo}
+          onClick={cerrarMenuIzquierdo}
+        >
+          <MenuIzquierda classes={classes} />
+        </div>
+      </Drawer>
+      <Drawer
+        open={abrirMenuDerecho}
+        onClose={cerrarMenuDerecho}
+        anchor="right"
+      >
+        <div
+          className={classes.list}
+          onKeyDown={cerrarMenuDerecho}
+          onClick={cerrarMenuDerecho}
+        >
+          <MenuDerecha classes={classes} salirSesion={salirSesionApp} usuario={userSession ? userSession.user : null} />
         </div>
       </Drawer>
       <Toolbar>
-        <IconButton color="inherit" onClick={()=>{setAbrirMenuIzquierdo(true);}}>
+        <IconButton
+          color="inherit"
+          onClick={() => {
+            setAbrirMenuIzquierdo(true);
+          }}
+        >
           <i className="material-icons">menu</i>
         </IconButton>
         <Typography variant="h6">Cursos Online</Typography>
@@ -83,7 +111,9 @@ const BarSession = () => {
           <Avatar src={reactImg} />
         </div>
         <div className={classes.seccionMobile}>
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={() => {
+            setAbrirMenuDerecho(true);
+          }}>
             <i className="material-icons">more_vert</i>
           </IconButton>
         </div>
@@ -92,4 +122,4 @@ const BarSession = () => {
   );
 };
 
-export default BarSession;
+export default withRouter(BarSession);

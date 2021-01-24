@@ -2,7 +2,7 @@ import HttpClient from "../Services/HttpClient";
 
 export const registerUser = (user) => {
   return new Promise((resolve, eject) => {
-    HttpClient.post("/user/register", user).then(response => {
+    HttpClient.post("/User/register", user).then(response => {
       resolve(response);
     });
   });
@@ -21,16 +21,16 @@ export const obtainCurrentUser = (dispatch) => {
       resolve(response);
     })
     .catch((error) => {
-      console.log('error actualizar perfil', error);
+      console.log('error obtener perfil', error);
       
-      resolve(error);
+      resolve(error.response);
     });
   });
 }
 
 export const updateUser = (user) => {
   return new Promise((resolve, eject) => {
-    HttpClient.put("/user", user).then(response => {
+    HttpClient.put("/User", user).then(response => {
       resolve(response);
     })
     .catch(error => {
@@ -41,8 +41,11 @@ export const updateUser = (user) => {
 
 export const loginUser = (user) => {
   return new Promise((resolve, eject) => {
-    HttpClient.post("/user/login", user).then(response => {
+    HttpClient.post("/User/login", user).then(response => {
       resolve(response);
+    })
+    .catch(error => {
+      resolve(error.response);
     });
   });
 }
