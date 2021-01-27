@@ -100,19 +100,19 @@ namespace WebAPI
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+      app.UseMiddleware<RequestHandlerMiddleware>();
       if (env.IsDevelopment())
       {
         // app.UseDeveloperExceptionPage();
-        app.UseMiddleware<ErrorHandlingMiddleware>();
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CursosOnline v1"));
       }
-
+      app.UseMiddleware<ErrorHandlingMiddleware>();
       app.UseCors("corsApp");
 
       app.UseAuthentication();
 
-      app.UseHttpsRedirection();
+      // app.UseHttpsRedirection();
 
       app.UseRouting();
 
@@ -122,6 +122,7 @@ namespace WebAPI
       {
         endpoints.MapControllers();
       });
+      
     }
   }
 }

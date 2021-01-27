@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import style from "../Tools/Style";
 import axios from "axios";
 
@@ -26,6 +26,7 @@ const LoginUser = () => {
     e.preventDefault();
     axios.post("http://localhost:5000/api/User/login",user).then((response) => {
       console.log("se logeo exitosamente al usuario", response);
+      window.localStorage.setItem("JWT_token", response.data.token);
     });
   };
 

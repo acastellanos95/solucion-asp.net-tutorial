@@ -8,15 +8,10 @@ export const registerUser = (user) => {
   });
 }
 
-export const obtainCurrentUser = (dispatch) => {
+export const obtainCurrentUser = () => {
   return new Promise((resolve, eject) => {
     HttpClient.get("/User")
     .then((response) => {
-      dispatch({
-        type : 'INICIAR_SESION',
-        sesion : response.data,
-        autenticado : true
-      });
 
       resolve(response);
     })

@@ -14,35 +14,35 @@ using Persistencia;
 
 namespace WebAPI
 {
-    public class Program
+  public class Program
+  {
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+      var hostserver = CreateHostBuilder(args).Build();
+      using (var ambiente = hostserver.Services.CreateScope())
+      {
+        var services = ambiente.ServiceProvider;
+        try
         {
-            var hostserver = CreateHostBuilder(args).Build();
-            using(var ambiente = hostserver.Services.CreateScope())
-            {
-                var services = ambiente.ServiceProvider;
-                try
-                {
-                    var userManager = services.GetRequiredService<UserManager<User>>();
-                    var context = services.GetRequiredService<CursosOnlineContext>();
-                    context.Database.Migrate();
-                    DataPrueba.InsertData(context, userManager).Wait();
-                }
-                catch (Exception e)
-                {
-                    var logging = services.GetRequiredService<ILogger<Program>>();
-                    logging.LogError(e, "Ocurrió un error en la migración");
-                }
-            }
-            hostserver.Run();
+          var userManager = services.GetRequiredService<UserManager<User>>();
+          var context = services.GetRequiredService<CursosOnlineContext>();
+          context.Database.Migrate();
+          DataPrueba.InsertData(context, userManager).Wait();
         }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        catch (Exception e)
+        {
+          var logging = services.GetRequiredService<ILogger<Program>>();
+          logging.LogError(e, "Ocurrió un error en la migración");
+        }
+      }
+      hostserver.Run();
     }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+              webBuilder.UseStartup<Startup>();
+            });
+  }
 }
