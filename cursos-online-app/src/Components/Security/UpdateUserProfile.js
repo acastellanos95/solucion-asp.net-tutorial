@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   Container,
   Grid,
@@ -9,6 +10,10 @@ import React, { useEffect, useState } from "react";
 import style from "../Tools/Style";
 import { obtainCurrentUser, updateUser } from "../../Actions/UserAction";
 import { useStateValue } from "../../Context/Store";
+import reactFoto from "../../logo.svg";
+import {v4 as uuidv4} from 'uuid';
+import ImageUploader from 'react-images-upload';
+import { obtenerDataImagen } from "../../Actions/ImagenAction";
 
 const UpdateUserProfile = () => {
   const [{ userSession}, dispatch] = useStateValue();
@@ -18,16 +23,18 @@ const UpdateUserProfile = () => {
     username: "",
     password: "",
     confirmacionPassword: "",
+    imagenPerfil: null,
+    fotoUrl: '',
   });
 
-  useEffect(()=>{
-    obtainCurrentUser(dispatch).then(response => {
-      console.log("esta es la data del objeto response del usuario actual ", response);
-      setProfile(response.data);
-    }).catch(error => {
-      console.log("hubo un error");
-    });
-  }, []);
+  // useEffect(()=>{
+  //   obtainCurrentUser(dispatch).then(response => {
+  //     console.log("esta es la data del objeto response del usuario actual ", response);
+  //     setProfile(response.data);
+  //   }).catch(error => {
+  //     console.log("hubo un error");
+  //   });
+  // }, []);
 
   const onChangeProfileHandler = (e) => {
     const { name, value } = e.target;
@@ -36,7 +43,8 @@ const UpdateUserProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateUser(profile).then((response) => {
+    updateUser(profile).then(response => {
+      console.log(response);
       if(response.status === 200){
         dispatch({
           type : "OPEN_SNACKBAR",
@@ -59,11 +67,27 @@ const UpdateUserProfile = () => {
     });
   };
 
+  const subirFoto = (imagenes) => {
+    const foto = imagenes[0];
+    const fotoUrl = URL.createObjectURL(foto);
+    obtenerDataImagen(foto).then(respuesta => {
+      console.log(respuesta);
+      setProfile(anterior => ({
+        ...anterior,
+        imagenPerfil: respuesta,
+        fotoUrl: fotoUrl
+      }));
+    });
+  };
+
+  const fotoKey = uuidv4();
+
   return (
     <Container component="main" maxWidth="md" justify="center">
       <div style={style.paper}>
+        <Avatar style={style.avatar} src={profile.fotoUrl || reactFoto} />
         <Typography component="h1" variant="h5">
-          Perfil de usuario
+          Perfil de Usuario
         </Typography>
         <form style={style.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
@@ -117,6 +141,17 @@ const UpdateUserProfile = () => {
                 value={profile.confirmacionPassword || ''}
                 fullWidth
                 label="Confirme su password"
+              />
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <ImageUploader
+                withIcon={false}
+                key={fotoKey}
+                singleImage={true}
+                buttonText="Seleccione una imagen de perfil"
+                onChange={subirFoto}
+                imgExtension={[".jpg", ".gif", ".png", ".jpeg"]}
+                maxFileSize={5242880}
               />
             </Grid>
           </Grid>

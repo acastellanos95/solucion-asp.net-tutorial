@@ -29,7 +29,7 @@ export const obtainCurrentUser = (dispatch) => {
 }
 
 export const updateUser = (user) => {
-  return new Promise((resolve, eject) => {
+  return new Promise((resolve, reject) => {
     HttpClient.put("/User", user)
     .then(response => {
       resolve(response);

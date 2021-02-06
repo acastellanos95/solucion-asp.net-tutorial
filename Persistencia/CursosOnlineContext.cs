@@ -8,11 +8,11 @@ namespace Persistencia
     public class CursosOnlineContext : IdentityDbContext<User>
     {
         public CursosOnlineContext(DbContextOptions options) : base(options)
-        {}
+        { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<CursoInstructor>().HasKey(ci => new {ci.InstructorId, ci.CursoId});
+            modelBuilder.Entity<CursoInstructor>().HasKey(ci => new { ci.InstructorId, ci.CursoId });
         }
 
         public DbSet<Comentario> Comentario { get; set; }
@@ -20,5 +20,6 @@ namespace Persistencia
         public DbSet<CursoInstructor> CursoInstructor { get; set; }
         public DbSet<Instructor> Instructor { get; set; }
         public DbSet<Precio> Precio { get; set; }
+        public DbSet<Documento> Documento { get; set; }
     }
 }
