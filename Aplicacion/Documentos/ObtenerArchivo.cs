@@ -26,7 +26,7 @@ namespace Aplicacion.Documentos
             }
             public async Task<ArchivoGenerico> Handle(ObtenerArchivoRequest request, CancellationToken cancellationToken)
             {
-                var archivo = await _context.Documento.Where(x => x.ObjetoReferencia == request.Id).FirstAsync();
+                var archivo = await _context.Documento.Where(x => x.ObjetoReferencia == request.Id).FirstOrDefaultAsync();
                 if(archivo == null)
                 {
                     throw new ExceptionHandling(HttpStatusCode.NotFound, new {mensaje = "No se encontró la imagen"});

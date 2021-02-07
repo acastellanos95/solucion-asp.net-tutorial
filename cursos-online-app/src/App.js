@@ -11,9 +11,11 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useStateValue } from "./Context/Store";
 import { useEffect, useState } from "react";
+import RutaSegura from "./Components/Navegation/RutaSegura";
+import NuevoCurso from "./Components/Cursos/NuevoCurso";
 
 function App() {
-  const [{ sesionUsuario, openSnackbar }, dispatch] = useStateValue();
+  const [{ openSnackbar }, dispatch] = useStateValue();
   const [iniciaApp, setIniciaApp] = useState(false);
 
   useEffect(() => {
@@ -28,7 +30,7 @@ function App() {
     }
   }, [iniciaApp]);
 
-  return (
+  return iniciaApp === false ? null : (
     <React.Fragment>
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
@@ -57,8 +59,13 @@ function App() {
             <Switch>
               <Route exact path="/auth/login" component={LoginUser} />
               <Route exact path="/auth/register" component={RegisterUser} />
-              <Route exact path="/auth/profile" component={UpdateUserProfile} />
-              <Route exact path="/" component={UpdateUserProfile} />
+              <RutaSegura
+                exact
+                path="/auth/profile"
+                component={UpdateUserProfile}
+              />
+              <RutaSegura exact path="/" component={UpdateUserProfile} />
+              <RutaSegura exact path="/curso/nuevo" component={NuevoCurso} />
             </Switch>
           </Grid>
         </MuithemeProvider>

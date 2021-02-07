@@ -1,9 +1,9 @@
 import userSessionReducer from './UserSessionReducer';
 import openSnackbarReduccer from './OpenSnackbarReducer';
 
-export const mainReducer = ({userSession, openSnackbar}, action) => {
+export const mainReducer = ({sesionUsuario, openSnackbar}, action) => {
   return {
-    sesionUsuario : userSessionReducer(userSession, action),
+    sesionUsuario : userSessionReducer(sesionUsuario, action),
     openSnackbar : openSnackbarReduccer(openSnackbar, action)
   }
 };

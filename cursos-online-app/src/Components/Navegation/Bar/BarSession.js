@@ -47,7 +47,8 @@ const useStyles = makeStyles((theme) => ({
 
 const BarSession = (props) => {
   const classes = useStyles();
-  const [{ userSession }, dispatch] = useStateValue();
+  const [{ sesionUsuario }, dispatch] = useStateValue();
+  console.log(sesionUsuario);
   const [abrirMenuIzquierdo, setAbrirMenuIzquierdo] = useState(false);
   const [abrirMenuDerecho, setAbrirMenuDerecho] = useState(false);
 
@@ -62,6 +63,11 @@ const BarSession = (props) => {
   const salirSesionApp = () => {
     localStorage.removeItem("JWT_token");
     props.history.push("/auth/login");
+    dispatch({
+      type: "SALIR_SESION",
+      nuevoUsuario: null,
+      autenticado: false
+    });
   };
 
   return (
@@ -89,7 +95,7 @@ const BarSession = (props) => {
           onKeyDown={cerrarMenuDerecho}
           onClick={cerrarMenuDerecho}
         >
-          <MenuDerecha classes={classes} salirSesion={salirSesionApp} usuario={userSession ? userSession.user : null} />
+          <MenuDerecha classes={classes} salirSesion={salirSesionApp} usuario={sesionUsuario ? sesionUsuario.user : null} />
         </div>
       </Drawer>
       <Toolbar>
@@ -104,11 +110,11 @@ const BarSession = (props) => {
         <Typography variant="h6">Cursos Online</Typography>
         <div className={classes.grow}></div>
         <div className={classes.seccionDesktop}>
-          <Button color="inherit">Salir</Button>
+          <Button color="inherit" onClick={salirSesionApp}>Salir</Button>
           <Button color="inherit">
-            {userSession ? userSession.user.nombreCompleto : ""}
+            {sesionUsuario ? sesionUsuario.usuario.nombreCompleto : ""}
           </Button>
-          <Avatar src={reactImg} />
+          <Avatar src={sesionUsuario.usuario.imagenPerfil||reactImg} />
         </div>
         <div className={classes.seccionMobile}>
           <IconButton color="inherit" onClick={() => {

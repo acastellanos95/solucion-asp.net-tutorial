@@ -2,7 +2,7 @@ import { Avatar, List, ListItem, ListItemText } from "@material-ui/core";
 import React from "react";
 import reactImg from "../../../logo.svg";
 
-const MenuDerecha = ({ classes, salirSesion, user }) => (
+const MenuDerecha =   ({ classes, salirSesion, user }) => (
   <div className={classes.list}>
     <List>
       <ListItem button >

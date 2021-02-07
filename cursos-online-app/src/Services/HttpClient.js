@@ -6,6 +6,7 @@ axios.interceptors.request.use((config) => {
 
   const securityToken = window.localStorage.getItem("JWT_token");
   if(securityToken){
+    console.log('Your security token is: ', securityToken);
     config.headers.Authorization = "Bearer " + securityToken;
     return config;
   }

@@ -16,8 +16,8 @@ import ImageUploader from 'react-images-upload';
 import { obtenerDataImagen } from "../../Actions/ImagenAction";
 
 const UpdateUserProfile = () => {
-  const [{ userSession}, dispatch] = useStateValue();
-  const [profile, setProfile] = useState({
+  const [{ sesionUsuario }, dispatch] = useStateValue();
+  const [usuario, setUsuario] = useState({
     nombreCompleto: "",
     email: "",
     username: "",
@@ -27,23 +27,24 @@ const UpdateUserProfile = () => {
     fotoUrl: '',
   });
 
-  // useEffect(()=>{
-  //   obtainCurrentUser(dispatch).then(response => {
-  //     console.log("esta es la data del objeto response del usuario actual ", response);
-  //     setProfile(response.data);
-  //   }).catch(error => {
-  //     console.log("hubo un error");
-  //   });
-  // }, []);
-
+  
   const onChangeProfileHandler = (e) => {
     const { name, value } = e.target;
-    setProfile((profileBefore) => ({ ...profileBefore, [name]: value }));
+    setUsuario(profileBefore => ({ ...profileBefore, [name]: value }));
   };
+  
+  useEffect(()=>{
+    setUsuario(sesionUsuario.usuario);
+    setUsuario(anterior => ({
+      ...anterior,
+      fotoUrl: sesionUsuario.usuario.imagenPerfil,
+      imagenPerfil: null
+    }));
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateUser(profile).then(response => {
+    updateUser(usuario, dispatch).then(response => {
       console.log(response);
       if(response.status === 200){
         dispatch({
@@ -66,13 +67,13 @@ const UpdateUserProfile = () => {
       }
     });
   };
-
+  
   const subirFoto = (imagenes) => {
     const foto = imagenes[0];
     const fotoUrl = URL.createObjectURL(foto);
     obtenerDataImagen(foto).then(respuesta => {
       console.log(respuesta);
-      setProfile(anterior => ({
+      setUsuario(anterior => ({
         ...anterior,
         imagenPerfil: respuesta,
         fotoUrl: fotoUrl
@@ -85,7 +86,7 @@ const UpdateUserProfile = () => {
   return (
     <Container component="main" maxWidth="md" justify="center">
       <div style={style.paper}>
-        <Avatar style={style.avatar} src={profile.fotoUrl || reactFoto} />
+        <Avatar style={style.avatar} src={usuario.fotoUrl || reactFoto} />
         <Typography component="h1" variant="h5">
           Perfil de Usuario
         </Typography>
@@ -96,7 +97,7 @@ const UpdateUserProfile = () => {
                 name="nombreCompleto"
                 variant="outlined"
                 onChange={onChangeProfileHandler}
-                value={profile.nombreCompleto || ''}
+                value={usuario.nombreCompleto || ''}
                 fullWidth
                 label="Ingrese su nombre completo"
               />
@@ -106,7 +107,7 @@ const UpdateUserProfile = () => {
                 name="username"
                 variant="outlined"
                 onChange={onChangeProfileHandler}
-                value={profile.username || ''}
+                value={usuario.username || ''}
                 fullWidth
                 label="Ingrese su username"
               />
@@ -116,7 +117,7 @@ const UpdateUserProfile = () => {
                 name="email"
                 variant="outlined"
                 onChange={onChangeProfileHandler}
-                value={profile.email || ''}
+                value={usuario.email || ''}
                 fullWidth
                 label="Ingrese su email"
               />
@@ -127,7 +128,7 @@ const UpdateUserProfile = () => {
                 type="password"
                 variant="outlined"
                 onChange={onChangeProfileHandler}
-                value={profile.password || ''}
+                value={usuario.password || ''}
                 fullWidth
                 label="Ingrese su password"
               />
@@ -138,7 +139,7 @@ const UpdateUserProfile = () => {
                 type="password"
                 variant="outlined"
                 onChange={onChangeProfileHandler}
-                value={profile.confirmacionPassword || ''}
+                value={usuario.confirmacionPassword || ''}
                 fullWidth
                 label="Confirme su password"
               />

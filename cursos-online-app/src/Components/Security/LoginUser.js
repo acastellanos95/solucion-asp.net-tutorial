@@ -9,23 +9,37 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React, { useEffect, useState } from "react";
 import style from "../Tools/Style";
 import axios from "axios";
+import { loginUser } from "../../Actions/UserAction";
+import { withRouter } from "react-router-dom";
+import { useStateValue } from "../../Context/Store";
 
-const LoginUser = () => {
-
-  const [user, setUser] = useState({
+const LoginUser = (props) => {
+  const [{usuarioSesion}, dispatch] = useStateValue();
+  const [usuario, setUsuario] = useState({
     Email: "",
     Password: "",
   });
 
   const onChangeUserHandler = (e) => {
     const { name, value } = e.target;
-    setUser((userBefore) => ({ ...userBefore, [name]: value }));
+    setUsuario((userBefore) => ({ ...userBefore, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post("http://localhost:5000/api/User/login",user).then((response) => {
-      console.log("se logeo exitosamente al usuario", response);
+    loginUser(usuario, dispatch).then(response => {
+      if(response.status === 200){
+        window.localStorage.setItem("JWT_token", response.data.token);
+        props.history.push("/auth/profile");
+      }else{
+        dispatch({
+          type: "OPEN_SNACKBAR",
+          openMensaje:{
+            open: true,
+            mensaje: "Las credenciales del usuario son incorrectas"
+          }
+        });
+      }
     });
   };
 
@@ -43,7 +57,7 @@ const LoginUser = () => {
             name="Email"
             variant="outlined"
             onChange={onChangeUserHandler}
-            value={user.Email}
+            value={usuario.Email}
             fullWidth
             margin="normal"
             label="Ingrese su Email"
@@ -53,7 +67,7 @@ const LoginUser = () => {
             type="password"
             variant="outlined"
             onChange={onChangeUserHandler}
-            value={user.Password}
+            value={usuario.Password}
             fullWidth
             margin="normal"
             label="Ingrese su password"
@@ -74,4 +88,4 @@ const LoginUser = () => {
   );
 };
 
-export default LoginUser;
+export default withRouter(LoginUser);
