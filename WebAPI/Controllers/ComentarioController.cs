@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Aplicacion.Comentarios;
 using MediatR;
@@ -6,20 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    public class ComentarioController : BaseController
+    public class ComentarioController : MiControllerBase
     {
-        // http://localhost:5000/api/Comentario
         [HttpPost]
-        public async Task<ActionResult<Unit>> Create([FromBody] Nuevo.NuevoComentarioRequest curso)
-        {
-            return await Mediator.Send(curso);
+        public async Task<ActionResult<Unit>> Crear(Nuevo.Ejecuta data){
+            return await Mediator.Send(data);
         }
 
-        // http://localhost:5000/api/Comentario/id
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Unit>> Delete(Guid id)
-        {
-            return await Mediator.Send(new Eliminar.EliminarComentarioRequest {ComentarioId = id});
+        public async Task<ActionResult<Unit>> Eliminar(Guid id){
+            return await Mediator.Send(new Eliminar.Ejecuta{Id = id});
         }
     }
 }

@@ -7,17 +7,15 @@ namespace Persistencia
 {
     public class DataPrueba
     {
-        public static async Task InsertData(CursosOnlineContext context, UserManager<User> userManager)
-        {
-            if(!userManager.Users.Any())
-            {
-                var user = new User 
+        public static async Task InsertarData(CursosOnlineContext context, UserManager<Usuario> usuarioManager){
+            if(!usuarioManager.Users.Any()){
+                var user = new Usuario
                 {
                     NombreCompleto = "Andre Castellanos",
                     UserName = "andre95",
                     Email = "ak47andre95@gmail.com"
                 };
-                await userManager.CreateAsync(user, "Yoongihoseok95$");
+                await usuarioManager.CreateAsync(user, "Yoongihoseok95$");
             }
         }
     }

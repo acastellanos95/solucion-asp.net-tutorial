@@ -1,12 +1,25 @@
-import HttpCliente from '../Services/HttpClient';
+import HttpCliente from '../servicios/HttpCliente';
+
 
 export const guardarCurso = async (curso, imagen) => {
-    const endPointCurso = '/Cursos';
-    const endPointImagen = '/Documento';
-
+    const endPointCurso = '/cursos';
     const promesaCurso = HttpCliente.post(endPointCurso, curso);
-    const promesaImagen = HttpCliente.post(endPointImagen, imagen);
-
-    const responseArray = await Promise.all([promesaCurso, promesaImagen]);
-    return responseArray;
+    
+    if(imagen){
+        const endPointImagen = '/documento';    
+        const promesaImagen = HttpCliente.post(endPointImagen, imagen);
+        return await Promise.all([promesaCurso, promesaImagen]);
+    }else{
+        return await Promise.all([promesaCurso]);
+    }
 };
+
+
+export const paginacionCurso = (paginador) => {
+    return new Promise((resolve, eject) => {
+        HttpCliente.post('/cursos/report', paginador).then(response => {
+            resolve(response);
+        })
+    })
+}
+

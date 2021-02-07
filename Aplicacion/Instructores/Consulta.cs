@@ -2,26 +2,28 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Persistencia.DapperConnection.Instructor;
+using Persistencia.DapperConexion.Instructor;
+using System.Linq;
 
 namespace Aplicacion.Instructores
 {
-  public class Consulta
-  {
-    public class Lista : IRequest<List<InstructorModel>>
-    { }
-
-    public class ListaHandler : IRequestHandler<Lista, List<InstructorModel>>
+    public class Consulta
     {
-      private readonly IInstructor _instructorRepositorio;
-      public ListaHandler(IInstructor instructorRepositorio)
-      {
-        _instructorRepositorio = instructorRepositorio;
-      }
-      public async Task<List<InstructorModel>> Handle(Lista request, CancellationToken cancellationToken)
-      {
-        return await _instructorRepositorio.GetInstructorList();
-      }
+        public class Lista : IRequest<List<InstructorModel>> {}
+
+        public class Manejador : IRequestHandler<Lista, List<InstructorModel>>
+        {
+            private readonly IInstructor _instructorRepository;
+            public Manejador(IInstructor instructorRepository){
+                   _instructorRepository = instructorRepository; 
+            }
+            public async Task<List<InstructorModel>> Handle(Lista request, CancellationToken cancellationToken)
+            {
+                  var resultado = await _instructorRepository.ObtenerLista();
+                  return resultado.ToList();
+                 
+            }
+        }
+
     }
-  }
 }

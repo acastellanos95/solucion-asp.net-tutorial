@@ -1,44 +1,36 @@
-using System;
 using System.Net;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Aplicacion.ErrorHandling;
-using FluentValidation;
 using MediatR;
-using Persistencia.DapperConnection.Instructor;
+using Persistencia.DapperConexion.Instructor;
+using Aplicacion.ManejadorError;
 
 namespace Aplicacion.Instructores
 {
-  public class ConsultaId
-  {
-    public class ConsultaIdInstructorRequest : IRequest<InstructorModel>
+    public class ConsultaId
     {
-      public Guid InstructorId { get; set; }
+        public class Ejecuta : IRequest<InstructorModel> {
+            public Guid Id  {get;set;}
+        }
+
+        public class Manejador : IRequestHandler<Ejecuta, InstructorModel>
+        {
+            private readonly IInstructor _instructorRepository;
+            public Manejador(IInstructor instructorRepository){
+                _instructorRepository = instructorRepository;
+            }
+
+            public async Task<InstructorModel> Handle(Ejecuta request, CancellationToken cancellationToken)
+            {
+                var instructor = await _instructorRepository.ObtenerPorId(request.Id);
+                if(instructor==null){
+                    throw new ManejadorExcepcion(HttpStatusCode.NotFound, new {mensaje="No se encontro el instructor"});
+                }
+
+                return instructor;
+            }
+        }
+
     }
-
-    public class ConsultaIdInstructorValidacion : AbstractValidator<ConsultaIdInstructorRequest>
-    {
-      public ConsultaIdInstructorValidacion()
-      {
-        RuleFor(x => x.InstructorId).NotEmpty();
-      }
-    }
-
-    public class ConsultaIdInstructorHandler : IRequestHandler<ConsultaIdInstructorRequest, InstructorModel>
-    {
-      private readonly IInstructor _instructor;
-      public ConsultaIdInstructorHandler(IInstructor instructor)
-      {
-        _instructor = instructor;
-      }
-
-      public async Task<InstructorModel> Handle(ConsultaIdInstructorRequest request, CancellationToken cancellationToken)
-      {
-
-        var result = await _instructor.GetById(request.InstructorId);
-        if(result == null) throw new ExceptionHandling(HttpStatusCode.NotFound, new { message = "No se encontró el instructor"});
-        return result;
-      }
-    }
-  }
 }
